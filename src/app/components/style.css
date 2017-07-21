@@ -1,4 +1,4 @@
-.appBar { background-color: red;
+.appBar { background-color: #062f3a;
 }
 
 .link {
@@ -7,6 +7,12 @@ position:relative;
 left:1100px;
 }
 
-.navigation {
-    background-color:white;
+.Dialog {
+    background-color:red;
+}
+.button{
+
+    position:relative;
+    left:1180px;
+
 }

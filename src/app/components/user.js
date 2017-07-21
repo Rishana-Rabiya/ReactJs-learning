@@ -1,5 +1,5 @@
 import React from 'react';
-export class Home extends React.Component {
+export class User extends React.Component {
 
 
 
@@ -8,7 +8,7 @@ export class Home extends React.Component {
 
         return(
             <div>
-                <span> home </span>
+                <span> user </span>
 
 
             </div>
