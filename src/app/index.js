@@ -1,9 +1,13 @@
 import React from 'react';
 import { render } from 'react-dom';
 import {Root} from './components/Root'
-import {Router, Route, browserHistory} from "react-router";
+import { BrowserRouter as Router,Route,Switch} from 'react-router-dom';
 import { Home } from './components/Home';
+import { superAdmin } from './components/superAdmin';
 import { User } from './components/user';
+import { ExecutiveUser } from './components/ExecutiveUser';
+import history from './components/history';
+
 
 
 class App extends React.Component {
@@ -11,14 +15,19 @@ class App extends React.Component {
 
     render() {
         return (
-            <div className = "container-fluid">
-                <div className = "row">
 
-                <Root/>
+        <Router history={history}>
+        <div>
+
+                <Route exact path='/'component={Root}/>
+                <Route path='/superAdmin' component={superAdmin}/>
+                <Route path='/user' component={User}/>
 
 
-                </div>
-            </div>
+        </div>
+
+        </Router>
+
         );
     }
 }

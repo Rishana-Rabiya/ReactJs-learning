@@ -1,3 +1,5 @@
+
+
 .appBar { background-color: #062f3a;
 }
 
@@ -7,12 +9,38 @@ position:relative;
 left:1100px;
 }
 
-.Dialog {
-    background-color:red;
-}
+
 .button{
 
     position:relative;
-    left:1180px;
+    left:1170px;
+
+}
+.link{
+    padding-right: 10px;
+
+}
+.input{
+    color:#17314c;
+border-bottom-style: ridge;
+
+
+}
+.set{
+    width:500px;
+
+}
+
+.outline{
+    border-style:ridge;
+    padding:10px;
+    margin:auto;
+    position:relative;
+    top:80px;
+}
+.add
+{position:relative;
+left:1000px;
+top:5px;
 
 }

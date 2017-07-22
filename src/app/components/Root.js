@@ -6,13 +6,8 @@ export class Root extends React.Component {
         return (
             <div className = "container-fluid">
                 <div className = "row">
-
-
                 <Header/>
-            
-
-
-
+                <Home/>
                 </div>
             </div>
         );
