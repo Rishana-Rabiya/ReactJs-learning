@@ -5,7 +5,10 @@ import Input from 'react-toolbox/lib/input';
 import {Modal} from './Modal';
 import theme from './style.css';
 import 'whatwg-fetch';
-import history from './history';
+import {constants} from './constants';
+import { Link} from 'react-router-dom';
+
+
 
 
 
@@ -18,7 +21,8 @@ constructor(){
     password : '',
     passValid : true,
     emailType : true,
-    formValid : false
+    formValid1 : false,
+    formValid2: false
 
 
   };
@@ -30,7 +34,8 @@ constructor(){
         email : '',
         password : '',
         passValid : true,
-        formValid : false,
+        formValid1 : false,
+        formValid2:false,
         emailType :true,
         failure:false,
         status:'',
@@ -40,28 +45,31 @@ constructor(){
     });
   }
 
+
   handleChange = (name, value) => {
 
 
       this.setState({...this.state, [name]: value});
       if(!(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value))&&name=="email"){
          this.setState({
-         emailType : false});
+         emailType : false,
+         formValid1:false});
 
       }
       else if((/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value))&&name=="email"){
         this.setState({
-        emailType : true});
+        emailType : true,formValid1:true});
 
       }
       else if(name==="password"&& !value){
          this.setState({
-         passValid : false});
+         passValid : false,
+         formValid2:false});
          console.log("it is required");
      }
      else if(name==="password"&&value){
          this.setState({
-         passValid : true});
+         passValid : true,formValid2:true});
 
      }
 
@@ -70,8 +78,9 @@ constructor(){
 
 
   handleSubmit = () => {
-      if(this.state.passValid&&this.state.emailType){
-      var TOKEN_KEY ='token';
+      console.log(this.state.formValid1);
+      if(this.state.formValid1&&this.state.formValid2){
+      var TOKEN_KEY ='Token';
       var email = this.state.email;
        fetch('https://localhost:3443/users/login', {
            method: "POST",
@@ -88,29 +97,33 @@ constructor(){
         if(data.success){
 
             fetch('https://localhost:3443/users/login/'+email).then(
-                function(response){
+                (response)=>{
                     return response.json();
 
-                }).then(function(user){
+                }).then((user)=>{
                     var credentials ={email:email,token:data.token,type:user.type}
+
                     localStorage.setItem(TOKEN_KEY,JSON.stringify(credentials));
 
-                    if(user.type=="user"){
 
-                        window.location.href = "http://localhost:8080/user";
+                    if(user.type=="user"){
+                        this.props.history.push('/user');
+
                     }
                     else if(user.type=="admin"){
-                        window.location.href = "http://localhost:8080/superAdmin";
+                        console.log(JSON.parse(localStorage.getItem(TOKEN_KEY)));
+                        this.props.history.push('/superAdmin');
+
                     }
                     else if(user.type=="exUser"){
-                        window.location.href = "http://localhost:8080/ex";
+                        this.props.history.push('/ExUser');
                     }
             });
         }
         else {
             console.log(data.err);
             this.handleToggle();
-            this.setState({failure:true,status:data.status,message:data.err.message});
+            this.setState({failure:true,status:data.err.status,message:data.err.message});
 
 
         }
@@ -119,14 +132,14 @@ constructor(){
     });
 }
 else {
-    alert("please fill the form correctly");
+    alert(constants.FILL_FORM);
 }
   }
 
 
   actions = [
-    { label: "cancel", onClick: this.handleToggle},
-    { label: "Login",  onClick: this.handleSubmit}
+    { label: constants.CANCEL, onClick: this.handleToggle},
+    { label: constants.LOGIN,  onClick: this.handleSubmit}
   ];
 
   render () {
@@ -134,21 +147,21 @@ else {
       <div className="container">
 
 
-        <Button className ={theme.themedButton} theme={theme} onClick={this.handleToggle} label="login" icon="exit_to_app" inverse></Button>
+        <Button className ={theme.themedButton} theme={theme} onClick={this.handleToggle} label={constants.LOGIN} icon="exit_to_app" inverse></Button>
         <Dialog
           actions={this.actions}
           active={this.state.active}
           onEscKeyDown={this.handleToggle}
           onOverlayClick={this.handleToggle}
-          title='Login'
+          title={constants.LOGIN}
 
 
         >
             <form noValidate>
-                <Input type='email' label='Email address' icon='email' value={this.state.email} onChange={this.handleChange.bind(this, 'email')}
+                <Input type='email' label={constants.EMAIL} icon='email' value={this.state.email} onChange={this.handleChange.bind(this, 'email')}
       />
                 { this.state.emailType ? null : <span> Invalid email id </span> }
-                <Input type='password' label='Password' icon='lock' value={this.state.password} onChange={this.handleChange.bind(this, 'password')}/>
+                <Input type='password' label={constants.PASSWORD} icon='lock' value={this.state.password} onChange={this.handleChange.bind(this, 'password')}/>
                 { this.state.passValid ? null : <span> Password is required </span> }
 
 
@@ -156,7 +169,7 @@ else {
         </Dialog>
 
 
-        {this.state.failure ? <Modal title={this.state.status} message={this.state.message} active={true} />:null}
+        {this.state.failure ? <Modal title={this.state.status} message={this.state.message} active={true}  />:null}
 
 
       </div>
