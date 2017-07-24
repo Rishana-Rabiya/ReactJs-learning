@@ -29,12 +29,13 @@ export class Modal extends React.Component {
         if(this.props.title==constants.OOPS){
            this.props.history.push('/');
         }
-        else if(this.props.title=="book") {
+        else if(this.props.label=="book"||this.props.label=="ex") {
             console.log("here inside the book");
             this.props.change();
 
 
         }
+
     }
 
 

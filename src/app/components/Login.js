@@ -160,9 +160,9 @@ else {
             <form noValidate>
                 <Input type='email' label={constants.EMAIL} icon='email' value={this.state.email} onChange={this.handleChange.bind(this, 'email')}
       />
-                { this.state.emailType ? null : <span> Invalid email id </span> }
+                { this.state.emailType ? null : <span> {constants.INVALID_EMAIL} </span> }
                 <Input type='password' label={constants.PASSWORD} icon='lock' value={this.state.password} onChange={this.handleChange.bind(this, 'password')}/>
-                { this.state.passValid ? null : <span> Password is required </span> }
+                { this.state.passValid ? null : <span> {constants.REQUIRED_PASSWORD} </span> }
 
 
             </form>

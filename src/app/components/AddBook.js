@@ -179,10 +179,6 @@ export class AddBook extends React.Component {
      if(data.success){
          console.log(this.state.success,this.state.done);
          this.setState({success:true,done:true});
-
-
-
-
      }
      else{
          this.setState({success:false,done:true});
@@ -198,6 +194,7 @@ onChange(){
 
     render(){
         return(
+
             <div className="container">
                 <div className ={theme.outline}>
                     <div className="row">
@@ -223,8 +220,9 @@ onChange(){
                         <Button  label={constants.ADD} raised primary className={theme.add} onClick={this.create} disabled={!this.state.formValid1||!this.state.formValid2||!this.state.formValid3||!this.state.formValid4||!this.state.formValid5}/>
                     </div>
                 </div>
-                {this.state.success&&this.state.done ? <Modal title={"book"} message={constants.BOOK_CREATE_SUCCESS} active={true} change={this.onChange.bind(this)}/>:null}
-                {!this.state.success&&this.state.done ? <Modal title={"book"} message={constants.BOOK_CREATE_FAILURE} active={true}  />:null}
+
+                {this.state.success&&this.state.done ? <Modal label={"book"} message={constants.BOOK_CREATE_SUCCESS} active={true} change={this.onChange.bind(this)}/>:null}
+                {!this.state.success&&this.state.done ? <Modal label={"book"} message={constants.BOOK_CREATE_FAILURE} active={true}  />:null}
 
 
 

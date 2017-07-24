@@ -33,13 +33,15 @@
     USER:'User',
     EX_USER:'Executive User',
     BOOK_CREATE_SUCCESS:'Successfully created the book',
-    BOOK_CREATE_FAILURE:'Book not created'
-
-
-
-
-
-
+    BOOK_CREATE_FAILURE:'Book not created',
+    CONFIRM_PASSWORD:'Confirm Password',
+    FIRSTNAME:'First Name',
+    LASTNAME:'Last Name',
+    REQUIRED_CPASSWORD:'Please confirm the Password',
+    FIRST_REQUIRED:'First Name Required',
+    PASS_MATCH:'Password Does Not Match',
+    ADD_EX_SUCCESS:'Successfully added the executive user',
+    EMAIL_EXIST:'Email Id Already exist'
 
 
 }

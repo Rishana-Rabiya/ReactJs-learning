@@ -22,7 +22,7 @@ left:1100px;
 }
 .input{
     color:#17314c;
-border-bottom-style: ridge;
+
 
 
 }
@@ -36,11 +36,15 @@ border-bottom-style: ridge;
     padding:10px;
     margin:auto;
     position:relative;
-    top:80px;
+    top:100px;
 }
 .add
 {position:relative;
 left:1000px;
 top:5px;
+
+}
+.cancel {
+    color:red;
 
 }

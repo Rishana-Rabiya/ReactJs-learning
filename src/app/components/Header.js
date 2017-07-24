@@ -14,7 +14,7 @@ import {AddExecutive} from './AddExecutive';
 export class Header extends React.Component {
     render() {
         return (
-            <AppBar theme={theme}  >
+            <AppBar theme={theme}  fixed>
 
                 <Navigation type='horizontal' theme={theme}>
                 <Login history={this.props.history}/>
@@ -32,16 +32,24 @@ export class AdminHeader extends React.Component {
     constructor(){
         super();
         this.state = {
-        loggedIn:true
+        loggedIn:true,
+        addEx : false
         };
     }
         logout =()=> {
             Logout(this.props.history);
 
         };
+        addExecutive=()=>{
+            this.props.history.push('/superAdmin');
+            this.setState({addEx:true});
+        }
+        againAdd=()=>{
+            this.setState({addEx:false});
+        }
     render() {
         return (
-            <AppBar theme={theme}>
+            <AppBar theme={theme} fixed>
 
 
 
@@ -53,7 +61,7 @@ export class AdminHeader extends React.Component {
                    <ul className="dropdown-menu">
                    <li><a>{constants.CATEGORY}</a></li>
                      <li><Link to='/superAdmin/addBook'>{constants.BOOK}</Link></li>
-                     <li><a>{constants.EX_USER}</a></li>
+                     <li><a onClick={this.addExecutive}>{constants.EX_USER}</a></li>
                    </ul>
                  </li>
                  <li className="dropdown">
@@ -99,7 +107,7 @@ export class AdminHeader extends React.Component {
                    <Button label={constants.LOGOUT} onClick={this.logout} icon="exit_to_app" inverse></Button>
                    </div>
 
-
+            {this.state.addEx? <AddExecutive change={this.againAdd}/> :null }
 
             </AppBar>
 
