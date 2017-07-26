@@ -2,18 +2,17 @@ import React from 'react';
 import Input from 'react-toolbox/lib/input';
 import Dropdown from 'react-toolbox/lib/dropdown';
 import {Button, IconButton} from 'react-toolbox/lib/button';
-import theme from './style.css';
-import {constants} from './constants';
+import theme from '../styles/style.css';
+import {constants} from '../common/constants';
 import {Modal} from './Modal';
 import { BrowserRouter as Router,Route,Switch} from 'react-router-dom';
-import history from './history';
+import {get,post} from '../common/fetch';
+
 
 export class AddBook extends React.Component {
     constructor(){
         super();
-
         this.state = {
-
         isbn: '',
         title:'',
         aname:'',
@@ -35,32 +34,22 @@ export class AddBook extends React.Component {
         formValid4:false,
         formValid5:false,
         done:false
-
-
       };
       }
+
       componentDidMount(){
-          const TOKEN_KEY = 'Token';
-          var credentials = JSON.parse(localStorage.getItem(TOKEN_KEY));
-          var token = credentials.token;
-          fetch('https://localhost:3443/category/find',{headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'x-access-token': token
-          }}).then((response)=>{
-                  return response.json();
-                }).then((response)=>{
-                    var cat = [];
-                    var categories = response.message;
-                    categories.forEach((element)=>{
-                        var data = {
-                         value:element.CategoryName,
-                        label:element.CategoryName
-                      }
-                     cat.push(data);
-                     this.setState({category:cat});
-                  });
-              });
+          get('category/find',(response)=>{
+              var cat = [];
+              var categories = response.message;
+              categories.forEach((element)=>{
+                  var data = {
+                   value:element.CategoryName,
+                  label:element.CategoryName
+                }
+               cat.push(data);
+               this.setState({category:cat});
+            });
+          });
       }
 
 
@@ -69,20 +58,15 @@ export class AddBook extends React.Component {
     handleChange = (name, value) => {
 
         this.setState({...this.state, [name]: value});
-
-
-
         if(name==="isbn"&& !value){
            this.setState({
            isbnValid : false,
-       formValid1:false});
-
+           formValid1:false});
        }
        else if(name==="isbn"&&value){
            this.setState({
            isbnValid : true,
            formValid1:true
-
        });
 
        }
@@ -136,56 +120,41 @@ export class AddBook extends React.Component {
 
     //create book
     create=()=>{
-    const TOKEN_KEY = 'Token';
-    var credentials = JSON.parse(localStorage.getItem(TOKEN_KEY));
-    var token = credentials.token;
-    fetch('https://localhost:3443/books/upload', {
-        method: "POST",
-        body: JSON.stringify(this.state),
-        headers: {
-            "Content-Type": "application/json",
-            'x-access-token': token
-        },
-        credentials: "same-origin"
-    }).then((response)=>{
-        return response.json();
+    post('books/upload',this.state,(data)=>{
+        this.setState ( {
+            isbn: '',
+            title:'',
+            aname:'',
+            cat:'',
+            ryear:'',
+            stack:'',
+            ed:'',
+            pub:'',
+            stackValid:true,
+            isbnValid:true,
+            titleValid:true,
+            authorValid:true,
+            catValid:true,
+            formValid1:false,
+            formValid2:false,
+            formValid3:false,
+            formValid4:false,
+            formValid5:false,
+            done:true
+        });
 
- }).then((data)=>{
-     this.setState ( {
+        if(data.success){
+            console.log(this.state.success,this.state.done);
+            this.setState({success:true,done:true});
+        }
+        else{
+            this.setState({success:false,done:true});
+        }
 
-     isbn: '',
-     title:'',
-     aname:'',
-     cat:'',
-     ryear:'',
-     stack:'',
-     ed:'',
-     pub:'',
-     stackValid:true,
-     isbnValid:true,
-     titleValid:true,
-     authorValid:true,
-     catValid:true,
-     formValid1:false,
-     formValid2:false,
-     formValid3:false,
-     formValid4:false,
-     formValid5:false,
-     done:true
-
-
- });
-
-     if(data.success){
-         console.log(this.state.success,this.state.done);
-         this.setState({success:true,done:true});
-     }
-     else{
-         this.setState({success:false,done:true});
-     }
- });
-
+    });
 }
+
+
 onChange(){
     this.setState({success:false,done:false});
 }
@@ -198,7 +167,7 @@ onChange(){
             <div className="container">
                 <div className ={theme.outline}>
                     <div className="row">
-                        <div className="col col-sm-12 col-offset-3">
+                        <div className="col col-sm-12">
 
                             <Input type='text' label={constants.ISBN}  className={theme.input} value={this.state.isbn} onChange={this.handleChange.bind(this, 'isbn')} />
                             { this.state.isbnValid ? null : <span> Isbn is required </span> }
@@ -217,14 +186,16 @@ onChange(){
                         </div>
                     </div>
                     <div className="row">
-                        <Button  label={constants.ADD} raised primary className={theme.add} onClick={this.create} disabled={!this.state.formValid1||!this.state.formValid2||!this.state.formValid3||!this.state.formValid4||!this.state.formValid5}/>
+                        <div className=" col col-xs-3 col-offset-9">
+                            <Button  label={constants.ADD} raised primary onClick={this.create} disabled={!this.state.formValid1||!this.state.formValid2||!this.state.formValid3||!this.state.formValid4||!this.state.formValid5}/>
+                        </div>
                     </div>
-                </div>
+
 
                 {this.state.success&&this.state.done ? <Modal label={"book"} message={constants.BOOK_CREATE_SUCCESS} active={true} change={this.onChange.bind(this)}/>:null}
                 {!this.state.success&&this.state.done ? <Modal label={"book"} message={constants.BOOK_CREATE_FAILURE} active={true}  />:null}
 
-
+</div>
 
             </div>
         );

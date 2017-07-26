@@ -38,13 +38,11 @@ left:1100px;
     position:relative;
     top:100px;
 }
-.add
-{position:relative;
-left:1000px;
-top:5px;
 
-}
 .cancel {
     color:red;
 
+}
+.dialog{
+    background-color:red;
 }

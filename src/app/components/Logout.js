@@ -1,14 +1,10 @@
+import {get} from '../common/fetch';
+import {removeObject} from '../common/localStorage';
 
 export function Logout(history) {
-    var TOKEN_KEY = 'Token';
-
-
-    fetch('https://localhost:3443/users/logout').then(
-        function(response){
-            console.log(response);
-            localStorage.removeItem(TOKEN_KEY);
-            history.push('/');
-            }
-
-        );
-    }
+    const TOKEN_KEY='Token';
+    get('users/logout',(response)=>{
+    removeObject(TOKEN_KEY);
+    history.push('/');
+    });
+}

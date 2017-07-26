@@ -2,9 +2,11 @@ import React from 'react';
 import Dialog from 'react-toolbox/lib/dialog';
 import Input from 'react-toolbox/lib/input';
 import Button from 'react-toolbox/lib/button';
-import {constants} from './constants';
-import theme from './style.css';
-import {Modal} from './Modal'
+import {constants} from '../common/constants';
+import theme from '../styles/style.css';
+import {Modal} from './Modal';
+import {post} from '../common/fetch';
+
 
 export class AddExecutive extends React.Component {
     constructor(props){
@@ -101,45 +103,21 @@ export class AddExecutive extends React.Component {
      };
 
  handleSubmit=()=>{
-     console.log("here inside the submit");
-     const TOKEN_KEY = 'Token';
-     var credentials = JSON.parse(localStorage.getItem(TOKEN_KEY));
-     var token = credentials.token;
-     fetch('https://localhost:3443/executive/create', {
-         method: "POST",
-         body: JSON.stringify(this.state),
-         headers: {
-             "Content-Type": "application/json",
-             'x-access-token': token
-         },
-         credentials: "same-origin"
-     }).then((response)=>{
-         return response.json();
-
-     }).then((data)=>{
-         console.log(data);
+     post('executive/create',this.state,(data)=>{
          this.setState({flag:true});
          if(data.message==="exist")
          {
              this.setState({message:constants.EMAIL_EXIST})
-
          }
          else if(data.message==="success"){
               this.setState({message:constants.ADD_EX_SUCCESS})
-
          }
          else if(data.message==="invalid"){
             this.setState({message:constants.INVALID_EMAIL})
-
          }
-
-
      });
-
-
-
-
  }
+
  handleToggleAction=()=>{
      this.props.change();
  }
@@ -198,7 +176,7 @@ export class AddExecutive extends React.Component {
                     { this.state.confirm ? null : <span> {constants.PASS_MATCH} </span> }
                 </div>
                 <div className="row">
-                    <div className="col-sm-offset-4 col-sm-10">
+                    <div className="col-sm-offset-4 col-sm-10 col-lg-offet-4 col-lg-10">
                         <Button label={constants.ADD} raised primary onClick={this.handleSubmit} disabled={!this.state.formValid1||!this.state.formValid2||!this.state.formValid3||!this.state.formValid4}/>
                         <Button label={constants.CANCEL} className={theme.cancel} onClick={this.handleToggleAction} />
                     </div>

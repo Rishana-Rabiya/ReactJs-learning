@@ -1,5 +1,5 @@
 import React from 'react';
-export class superAdmin extends React.Component {
+export class ExecutiveUser extends React.Component {
 
 
 

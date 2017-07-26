@@ -2,7 +2,6 @@
 
     LOGIN:'Login',
     NOT_LOGGED_IN :'you are not logged in',
-    BASE_URL : 'http://localhost:8080',
     OK : 'ok',
     CANCEL :'cancel',
     OOPS :'Oops!',
@@ -41,7 +40,14 @@
     FIRST_REQUIRED:'First Name Required',
     PASS_MATCH:'Password Does Not Match',
     ADD_EX_SUCCESS:'Successfully added the executive user',
-    EMAIL_EXIST:'Email Id Already exist'
+    EMAIL_EXIST:'Email Id Already exist',
+    CAT_CREATE:'Create Category',
+    CATEGORY_NAME:'Category Name',
+    CREATE_EX :'Add Executive',
+    ADD_CAT_SUCCESS:'Category added Successfully',
+    ADD_CAT_EXIST:'Category Already exist',
+    REQUIRED_CATEGORY:'Category Name is required',
+    CREATE_EX :'Create Executive User'
 
 
 }
